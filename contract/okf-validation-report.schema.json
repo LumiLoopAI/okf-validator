@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/LumiLoopAI/lumipad-okf-validator/contract/okf-validation-report.schema.json",
+  "title": "LumiPad OKF validation report",
+  "description": "The deterministic result of evaluating one immutable bundle against one explicit OKF contract.",
+  "x-contract-version": "1.2.1",
+  "x-stability": "experimental",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "validator",
+    "status",
+    "bundle",
+    "expected_okf_version",
+    "declared_okf_version",
+    "profile",
+    "dimensions",
+    "contract",
+    "metrics",
+    "findings",
+    "recommendations"
+  ],
+  "properties": {
+    "schema_version": { "const": "okf-validation-report.v1" },
+    "validator": { "type": "string", "pattern": "^lumipad-okf-validator/[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "status": { "enum": ["pass", "fail"] },
+    "bundle": { "type": "string", "minLength": 1 },
+    "expected_okf_version": { "type": "string", "minLength": 1 },
+    "declared_okf_version": { "type": ["string", "null"] },
+    "profile": { "type": "string" },
+    "dimensions": {
+      "type": "object",
+      "required": ["core_conformance", "evaluation_boundary", "advisory_guidance"],
+      "properties": {
+        "core_conformance": { "enum": ["pass", "fail"] },
+        "evaluation_boundary": { "enum": ["pass", "fail"] },
+        "advisory_guidance": { "enum": ["clear", "review"] }
+      },
+      "additionalProperties": true
+    },
+    "contract": {
+      "type": "object",
+      "required": ["path", "sha256", "upstream"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "upstream": { "type": "object" }
+      },
+      "additionalProperties": true
+    },
+    "metrics": {
+      "type": "object",
+      "required": ["markdown_documents", "concept_documents", "reserved_documents", "errors", "core_errors", "boundary_errors", "warnings"],
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rule", "severity", "path", "message"],
+        "properties": {
+          "rule": { "type": "string", "minLength": 1 },
+          "severity": { "enum": ["error", "warning"] },
+          "path": { "type": "string" },
+          "message": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": true
+      }
+    },
+    "recommendations": { "type": "array", "items": { "type": "object" } }
+  },
+  "additionalProperties": true
+}

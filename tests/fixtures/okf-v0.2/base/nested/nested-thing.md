@@ -1,0 +1,4 @@
+---
+type: Concept
+---
+# Nested Thing
