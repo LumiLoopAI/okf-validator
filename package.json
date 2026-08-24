@@ -1,0 +1,26 @@
+{
+  "name": "@lumiloop/okf-validator",
+  "version": "0.1.0",
+  "description": "Deterministic, library-first Open Knowledge Format (OKF) conformance validator.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": { "okf-validator": "dist/cli.js" },
+  "files": ["dist", "contract", "LICENSE", "README.md"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "test": "npm run build && node --test --enable-source-maps tests/",
+    "clean": "rm -rf dist"
+  },
+  "repository": { "type": "git", "url": "git+https://github.com/LumiLoopAI/okf-validator.git" },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.3"
+  }
+}
