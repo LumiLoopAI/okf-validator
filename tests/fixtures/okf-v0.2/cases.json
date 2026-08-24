@@ -1,6 +1,6 @@
 {
   "schema_version": "okf-conformance-cases.v1",
-  "contract_version": "2.0.0",
+  "contract_version": "2.1.0",
   "base_fixture": "base",
   "cases": [
     {
@@ -9,7 +9,13 @@
       "variant": "positive",
       "command": "validate",
       "operations": [],
-      "expect": { "exit": 0, "status": "pass", "absent_rules": ["OKF-0.2-C1"] }
+      "expect": {
+        "exit": 0,
+        "status": "pass",
+        "absent_rules": [
+          "OKF-0.2-C1"
+        ]
+      }
     },
     {
       "id": "c1-negative-missing-frontmatter",
@@ -17,9 +23,19 @@
       "variant": "negative",
       "command": "validate",
       "operations": [
-        { "op": "write", "path": "thing.md", "content": "# Thing\n\nNo frontmatter.\n" }
+        {
+          "op": "write",
+          "path": "thing.md",
+          "content": "# Thing\n\nNo frontmatter.\n"
+        }
       ],
-      "expect": { "exit": 1, "status": "fail", "present_rules": ["OKF-0.2-C1"] }
+      "expect": {
+        "exit": 1,
+        "status": "fail",
+        "present_rules": [
+          "OKF-0.2-C1"
+        ]
+      }
     },
     {
       "id": "c2-positive-nonempty-type",
@@ -27,7 +43,13 @@
       "variant": "positive",
       "command": "validate",
       "operations": [],
-      "expect": { "exit": 0, "status": "pass", "absent_rules": ["OKF-0.2-C2"] }
+      "expect": {
+        "exit": 0,
+        "status": "pass",
+        "absent_rules": [
+          "OKF-0.2-C2"
+        ]
+      }
     },
     {
       "id": "c2-negative-empty-type",
@@ -35,9 +57,19 @@
       "variant": "negative",
       "command": "validate",
       "operations": [
-        { "op": "write", "path": "thing.md", "content": "---\ntype: \"\"\n---\n# Thing\n" }
+        {
+          "op": "write",
+          "path": "thing.md",
+          "content": "---\ntype: \"\"\n---\n# Thing\n"
+        }
       ],
-      "expect": { "exit": 1, "status": "fail", "present_rules": ["OKF-0.2-C2"] }
+      "expect": {
+        "exit": 1,
+        "status": "fail",
+        "present_rules": [
+          "OKF-0.2-C2"
+        ]
+      }
     },
     {
       "id": "c3-index-positive-reserved-structure",
@@ -45,7 +77,13 @@
       "variant": "positive",
       "command": "validate",
       "operations": [],
-      "expect": { "exit": 0, "status": "pass", "absent_rules": ["OKF-0.2-C3-INDEX"] }
+      "expect": {
+        "exit": 0,
+        "status": "pass",
+        "absent_rules": [
+          "OKF-0.2-C3-INDEX"
+        ]
+      }
     },
     {
       "id": "c3-index-negative-nested-frontmatter",
@@ -53,9 +91,19 @@
       "variant": "negative",
       "command": "validate",
       "operations": [
-        { "op": "write", "path": "nested/index.md", "content": "---\ntype: Concept\n---\n# Nested concepts\n\n* [Nested Thing](nested-thing.md)\n" }
+        {
+          "op": "write",
+          "path": "nested/index.md",
+          "content": "---\ntype: Concept\n---\n# Nested concepts\n\n* [Nested Thing](nested-thing.md)\n"
+        }
       ],
-      "expect": { "exit": 1, "status": "fail", "present_rules": ["OKF-0.2-C3-INDEX"] }
+      "expect": {
+        "exit": 1,
+        "status": "fail",
+        "present_rules": [
+          "OKF-0.2-C3-INDEX"
+        ]
+      }
     },
     {
       "id": "c3-log-positive-date-groups",
@@ -63,7 +111,13 @@
       "variant": "positive",
       "command": "validate",
       "operations": [],
-      "expect": { "exit": 0, "status": "pass", "absent_rules": ["OKF-0.2-C3-LOG"] }
+      "expect": {
+        "exit": 0,
+        "status": "pass",
+        "absent_rules": [
+          "OKF-0.2-C3-LOG"
+        ]
+      }
     },
     {
       "id": "c3-log-negative-invalid-date",
@@ -71,9 +125,19 @@
       "variant": "negative",
       "command": "validate",
       "operations": [
-        { "op": "write", "path": "log.md", "content": "# Update Log\n\n## August 6, 2026\n\n* Updated Thing.\n" }
+        {
+          "op": "write",
+          "path": "log.md",
+          "content": "# Update Log\n\n## August 6, 2026\n\n* Updated Thing.\n"
+        }
       ],
-      "expect": { "exit": 1, "status": "fail", "present_rules": ["OKF-0.2-C3-LOG"] }
+      "expect": {
+        "exit": 1,
+        "status": "fail",
+        "present_rules": [
+          "OKF-0.2-C3-LOG"
+        ]
+      }
     },
     {
       "id": "permissive-optional-positive-populated",
@@ -81,7 +145,10 @@
       "variant": "positive",
       "command": "validate",
       "operations": [],
-      "expect": { "exit": 0, "status": "pass" }
+      "expect": {
+        "exit": 0,
+        "status": "pass"
+      }
     },
     {
       "id": "permissive-optional-negative-absent",
@@ -89,9 +156,16 @@
       "variant": "negative",
       "command": "validate",
       "operations": [
-        { "op": "write", "path": "thing.md", "content": "---\ntype: Concept\n---\n# Thing\n" }
+        {
+          "op": "write",
+          "path": "thing.md",
+          "content": "---\ntype: Concept\n---\n# Thing\n"
+        }
       ],
-      "expect": { "exit": 0, "status": "pass" }
+      "expect": {
+        "exit": 0,
+        "status": "pass"
+      }
     },
     {
       "id": "permissive-type-positive-known",
@@ -99,7 +173,10 @@
       "variant": "positive",
       "command": "validate",
       "operations": [],
-      "expect": { "exit": 0, "status": "pass" }
+      "expect": {
+        "exit": 0,
+        "status": "pass"
+      }
     },
     {
       "id": "permissive-type-negative-unknown",
@@ -107,9 +184,16 @@
       "variant": "negative",
       "command": "validate",
       "operations": [
-        { "op": "write", "path": "thing.md", "content": "---\ntype: Completely Novel Domain Object\n---\n# Thing\n" }
+        {
+          "op": "write",
+          "path": "thing.md",
+          "content": "---\ntype: Completely Novel Domain Object\n---\n# Thing\n"
+        }
       ],
-      "expect": { "exit": 0, "status": "pass" }
+      "expect": {
+        "exit": 0,
+        "status": "pass"
+      }
     },
     {
       "id": "permissive-key-positive-standard",
@@ -117,7 +201,10 @@
       "variant": "positive",
       "command": "validate",
       "operations": [],
-      "expect": { "exit": 0, "status": "pass" }
+      "expect": {
+        "exit": 0,
+        "status": "pass"
+      }
     },
     {
       "id": "permissive-key-negative-unknown",
@@ -125,9 +212,16 @@
       "variant": "negative",
       "command": "validate",
       "operations": [
-        { "op": "write", "path": "thing.md", "content": "---\ntype: Concept\nproducer_extension: { arbitrary: true }\n---\n# Thing\n" }
+        {
+          "op": "write",
+          "path": "thing.md",
+          "content": "---\ntype: Concept\nproducer_extension: { arbitrary: true }\n---\n# Thing\n"
+        }
       ],
-      "expect": { "exit": 0, "status": "pass" }
+      "expect": {
+        "exit": 0,
+        "status": "pass"
+      }
     },
     {
       "id": "permissive-link-positive-resolved",
@@ -135,7 +229,13 @@
       "variant": "positive",
       "command": "validate",
       "operations": [],
-      "expect": { "exit": 0, "status": "pass", "absent_rules": ["OKF-0.2-A-LINK"] }
+      "expect": {
+        "exit": 0,
+        "status": "pass",
+        "absent_rules": [
+          "OKF-0.2-A-LINK"
+        ]
+      }
     },
     {
       "id": "permissive-link-negative-broken",
@@ -143,9 +243,19 @@
       "variant": "negative",
       "command": "validate",
       "operations": [
-        { "op": "append", "path": "thing.md", "content": "\nSee [Future concept](future.md).\n" }
+        {
+          "op": "append",
+          "path": "thing.md",
+          "content": "\nSee [Future concept](future.md).\n"
+        }
       ],
-      "expect": { "exit": 0, "status": "pass", "present_rules": ["OKF-0.2-A-LINK"] }
+      "expect": {
+        "exit": 0,
+        "status": "pass",
+        "present_rules": [
+          "OKF-0.2-A-LINK"
+        ]
+      }
     },
     {
       "id": "permissive-index-positive-present",
@@ -153,7 +263,10 @@
       "variant": "positive",
       "command": "validate",
       "operations": [],
-      "expect": { "exit": 0, "status": "pass" }
+      "expect": {
+        "exit": 0,
+        "status": "pass"
+      }
     },
     {
       "id": "permissive-index-negative-missing",
@@ -161,10 +274,23 @@
       "variant": "negative",
       "command": "validate",
       "operations": [
-        { "op": "delete", "path": "index.md" },
-        { "op": "delete", "path": "nested/index.md" }
+        {
+          "op": "delete",
+          "path": "index.md"
+        },
+        {
+          "op": "delete",
+          "path": "nested/index.md"
+        }
       ],
-      "expect": { "exit": 0, "status": "pass", "absent_rules": ["BOUNDARY-VERSION", "OKF-0.2-C3-INDEX"] }
+      "expect": {
+        "exit": 0,
+        "status": "pass",
+        "absent_rules": [
+          "BOUNDARY-VERSION",
+          "OKF-0.2-C3-INDEX"
+        ]
+      }
     },
     {
       "id": "permissive-verified-positive-list",
@@ -172,7 +298,13 @@
       "variant": "positive",
       "command": "validate",
       "operations": [],
-      "expect": { "exit": 0, "status": "pass", "absent_rules": ["OKF-0.2-A-VERIFIED"] }
+      "expect": {
+        "exit": 0,
+        "status": "pass",
+        "absent_rules": [
+          "OKF-0.2-A-VERIFIED"
+        ]
+      }
     },
     {
       "id": "permissive-verified-negative-bare-mapping",
@@ -180,9 +312,19 @@
       "variant": "negative",
       "command": "validate",
       "operations": [
-        { "op": "write", "path": "thing.md", "content": "---\ntype: Concept\nverified: { by: \"human:reviewer\", at: \"2026-08-06T01:00:00Z\" }\n---\n# Thing\n" }
+        {
+          "op": "write",
+          "path": "thing.md",
+          "content": "---\ntype: Concept\nverified: { by: \"human:reviewer\", at: \"2026-08-06T01:00:00Z\" }\n---\n# Thing\n"
+        }
       ],
-      "expect": { "exit": 0, "status": "pass", "absent_rules": ["OKF-0.2-A-VERIFIED"] }
+      "expect": {
+        "exit": 0,
+        "status": "pass",
+        "absent_rules": [
+          "OKF-0.2-A-VERIFIED"
+        ]
+      }
     },
     {
       "id": "boundary-contract-positive-selected",
@@ -190,16 +332,30 @@
       "variant": "positive",
       "command": "validate",
       "operations": [],
-      "expect": { "exit": 0, "status": "pass", "absent_rules": ["BOUNDARY-CONTRACT"] }
+      "expect": {
+        "exit": 0,
+        "status": "pass",
+        "absent_rules": [
+          "BOUNDARY-CONTRACT"
+        ]
+      }
     },
     {
       "id": "boundary-contract-negative-mismatch",
       "requirement": "BOUNDARY-CONTRACT",
       "variant": "negative",
       "command": "validate",
-      "contract_overrides": { "okf_version": "0.1" },
+      "contract_overrides": {
+        "okf_version": "0.1"
+      },
       "operations": [],
-      "expect": { "exit": 1, "status": "fail", "present_rules": ["BOUNDARY-CONTRACT"] }
+      "expect": {
+        "exit": 1,
+        "status": "fail",
+        "present_rules": [
+          "BOUNDARY-CONTRACT"
+        ]
+      }
     },
     {
       "id": "boundary-version-positive-match",
@@ -207,7 +363,13 @@
       "variant": "positive",
       "command": "validate",
       "operations": [],
-      "expect": { "exit": 0, "status": "pass", "absent_rules": ["BOUNDARY-VERSION"] }
+      "expect": {
+        "exit": 0,
+        "status": "pass",
+        "absent_rules": [
+          "BOUNDARY-VERSION"
+        ]
+      }
     },
     {
       "id": "boundary-version-negative-mismatch",
@@ -215,9 +377,19 @@
       "variant": "negative",
       "command": "validate",
       "operations": [
-        { "op": "write", "path": "index.md", "content": "---\nokf_version: \"0.1\"\n---\n# Example Bundle\n\n* [Thing](thing.md)\n" }
+        {
+          "op": "write",
+          "path": "index.md",
+          "content": "---\nokf_version: \"0.1\"\n---\n# Example Bundle\n\n* [Thing](thing.md)\n"
+        }
       ],
-      "expect": { "exit": 1, "status": "fail", "present_rules": ["BOUNDARY-VERSION"] }
+      "expect": {
+        "exit": 1,
+        "status": "fail",
+        "present_rules": [
+          "BOUNDARY-VERSION"
+        ]
+      }
     },
     {
       "id": "boundary-immutable-positive-unchanged",
@@ -225,7 +397,10 @@
       "variant": "positive",
       "command": "verify",
       "operations": [],
-      "expect": { "exit": 0, "status": "pass" }
+      "expect": {
+        "exit": 0,
+        "status": "pass"
+      }
     },
     {
       "id": "boundary-immutable-negative-mutated",
@@ -233,9 +408,19 @@
       "variant": "negative",
       "command": "verify",
       "operations": [
-        { "op": "append", "path": "thing.md", "content": "\nMutated after snapshot.\n" }
+        {
+          "op": "append",
+          "path": "thing.md",
+          "content": "\nMutated after snapshot.\n"
+        }
       ],
-      "expect": { "exit": 1, "status": "fail", "modified": ["thing.md"] }
+      "expect": {
+        "exit": 1,
+        "status": "fail",
+        "modified": [
+          "thing.md"
+        ]
+      }
     }
   ]
 }

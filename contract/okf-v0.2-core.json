@@ -1,19 +1,30 @@
 {
-  "contract_version": "2.0.0",
+  "contract_version": "2.1.0",
   "okf_version": "0.2",
   "upstream": {
-    "repository": "https://github.com/GoogleCloudPlatform/knowledge-catalog.git",
-    "path": "okf/SPEC.md",
-    "commit": "930b65fc3f5619d5d0591f88c72ebae8b848d60d",
-    "sha256": "5a3311d270bebb16d558010e75064f5b75323f284992641732b1c8097511f948"
+    "repository": "https://github.com/GoogleCloudPlatform/open-knowledge-format.git",
+    "path": "SPEC.md",
+    "commit": "ad30107c31c06aec8a7d5636e0d1058118604e6f",
+    "sha256": "26aa5da029278939f914e578107242d9607d4f2dc5fe153272b82f9ed1030101"
   },
   "core_rules": [
     {
       "id": "OKF-0.2-C1",
       "description": "Every non-reserved Markdown concept is UTF-8 and has a parseable YAML frontmatter mapping.",
       "specification": {
-        "sections": ["§3.1", "§4", "§11 item 1"],
-        "lines": [134, 144, 153, 159, 733, 738],
+        "sections": [
+          "\u00a73.1",
+          "\u00a74",
+          "\u00a711 item 1"
+        ],
+        "lines": [
+          134,
+          144,
+          153,
+          159,
+          733,
+          738
+        ],
         "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L134-L159"
       }
     },
@@ -21,8 +32,16 @@
       "id": "OKF-0.2-C2",
       "description": "Every concept frontmatter mapping has a non-empty string type field.",
       "specification": {
-        "sections": ["§4.1", "§11 item 2"],
-        "lines": [175, 188, 733, 740],
+        "sections": [
+          "\u00a74.1",
+          "\u00a711 item 2"
+        ],
+        "lines": [
+          175,
+          188,
+          733,
+          740
+        ],
         "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L175-L188"
       }
     },
@@ -30,8 +49,22 @@
       "id": "OKF-0.2-C3-INDEX",
       "description": "An index.md is reserved, contains no frontmatter except an optional root okf_version declaration, and uses Markdown headings when present.",
       "specification": {
-        "sections": ["§3.1", "§8", "§11 item 3", "§12"],
-        "lines": [134, 144, 502, 526, 733, 741, 763, 777],
+        "sections": [
+          "\u00a73.1",
+          "\u00a78",
+          "\u00a711 item 3",
+          "\u00a712"
+        ],
+        "lines": [
+          134,
+          144,
+          502,
+          526,
+          733,
+          741,
+          763,
+          777
+        ],
         "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L502-L526"
       }
     },
@@ -39,8 +72,19 @@
       "id": "OKF-0.2-C3-LOG",
       "description": "A log.md is reserved, has no frontmatter, and uses newest-first ISO 8601 date-grouped Markdown entries when present.",
       "specification": {
-        "sections": ["§3.1", "§9", "§11 item 3"],
-        "lines": [134, 144, 530, 549, 733, 741],
+        "sections": [
+          "\u00a73.1",
+          "\u00a79",
+          "\u00a711 item 3"
+        ],
+        "lines": [
+          134,
+          144,
+          530,
+          549,
+          733,
+          741
+        ],
         "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L530-L549"
       }
     }
@@ -50,8 +94,19 @@
       "id": "OKF-0.2-P-OPTIONAL",
       "description": "Missing optional frontmatter families do not make a bundle nonconformant.",
       "specification": {
-        "sections": ["§4.1", "§5", "§11"],
-        "lines": [187, 203, 277, 282, 743, 755],
+        "sections": [
+          "\u00a74.1",
+          "\u00a75",
+          "\u00a711"
+        ],
+        "lines": [
+          187,
+          203,
+          277,
+          282,
+          743,
+          755
+        ],
         "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L743-L759"
       }
     },
@@ -59,8 +114,16 @@
       "id": "OKF-0.2-P-UNKNOWN-TYPE",
       "description": "Unknown non-empty type values are accepted as generic concepts.",
       "specification": {
-        "sections": ["§4.1", "§11"],
-        "lines": [177, 188, 752, 759],
+        "sections": [
+          "\u00a74.1",
+          "\u00a711"
+        ],
+        "lines": [
+          177,
+          188,
+          752,
+          759
+        ],
         "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L175-L188"
       }
     },
@@ -68,8 +131,16 @@
       "id": "OKF-0.2-P-UNKNOWN-KEY",
       "description": "Unknown additional frontmatter keys are accepted.",
       "specification": {
-        "sections": ["§4.1", "§11"],
-        "lines": [205, 207, 752, 759],
+        "sections": [
+          "\u00a74.1",
+          "\u00a711"
+        ],
+        "lines": [
+          205,
+          207,
+          752,
+          759
+        ],
         "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L205-L207"
       }
     },
@@ -77,8 +148,16 @@
       "id": "OKF-0.2-P-BROKEN-LINK",
       "description": "Broken cross-links are surfaced as advisory findings and do not make a bundle nonconformant.",
       "specification": {
-        "sections": ["§6.1", "§11"],
-        "lines": [461, 463, 752, 759],
+        "sections": [
+          "\u00a76.1",
+          "\u00a711"
+        ],
+        "lines": [
+          461,
+          463,
+          752,
+          759
+        ],
         "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L461-L463"
       }
     },
@@ -86,8 +165,16 @@
       "id": "OKF-0.2-P-MISSING-INDEX",
       "description": "Missing index.md files are accepted, including at the bundle root.",
       "specification": {
-        "sections": ["§8", "§11"],
-        "lines": [504, 526, 752, 759],
+        "sections": [
+          "\u00a78",
+          "\u00a711"
+        ],
+        "lines": [
+          504,
+          526,
+          752,
+          759
+        ],
         "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L502-L526"
       }
     },
@@ -95,8 +182,16 @@
       "id": "OKF-0.2-P-VERIFIED-MAPPING",
       "description": "A bare verified mapping is accepted as a one-element verification list.",
       "specification": {
-        "sections": ["§5.2", "§11"],
-        "lines": [385, 396, 743, 750],
+        "sections": [
+          "\u00a75.2",
+          "\u00a711"
+        ],
+        "lines": [
+          385,
+          396,
+          743,
+          750
+        ],
         "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L385-L396"
       }
     }
