@@ -1,0 +1,181 @@
+{
+  "acme_retail": {
+    "status": "fail",
+    "dimensions": {
+      "core_conformance": "fail",
+      "evaluation_boundary": "pass",
+      "advisory_guidance": "review"
+    },
+    "metrics": {
+      "markdown_documents": 17,
+      "concept_documents": 9,
+      "reserved_documents": 8,
+      "errors": 1,
+      "core_errors": 1,
+      "boundary_errors": 0,
+      "warnings": 12
+    },
+    "findings": [
+      {
+        "rule": "OKF-0.2-A-LINK",
+        "severity": "warning",
+        "path": "computations/gross-margin-period.md"
+      },
+      {
+        "rule": "OKF-0.2-A-LINK",
+        "severity": "warning",
+        "path": "computations/gross-margin-period.md"
+      },
+      {
+        "rule": "OKF-0.2-A-LINK",
+        "severity": "warning",
+        "path": "computations/gross-margin-period.md"
+      },
+      {
+        "rule": "OKF-0.2-A-LINK",
+        "severity": "warning",
+        "path": "computations/gross-margin-period.md"
+      },
+      {
+        "rule": "OKF-0.2-A-LINK",
+        "severity": "warning",
+        "path": "computations/revenue-ytd.md"
+      },
+      {
+        "rule": "OKF-0.2-A-LINK",
+        "severity": "warning",
+        "path": "computations/revenue-ytd.md"
+      },
+      {
+        "rule": "OKF-0.2-A-LINK",
+        "severity": "warning",
+        "path": "computations/revenue-ytd.md"
+      },
+      {
+        "rule": "OKF-0.2-A-LINK",
+        "severity": "warning",
+        "path": "computations/revenue-ytd.md"
+      },
+      {
+        "rule": "OKF-0.2-A-LINK",
+        "severity": "warning",
+        "path": "metrics/gross-margin.md"
+      },
+      {
+        "rule": "OKF-0.2-A-LINK",
+        "severity": "warning",
+        "path": "metrics/gross-margin.md"
+      },
+      {
+        "rule": "OKF-0.2-A-LINK",
+        "severity": "warning",
+        "path": "metrics/revenue.md"
+      },
+      {
+        "rule": "OKF-0.2-A-LINK",
+        "severity": "warning",
+        "path": "tables/orders.md"
+      },
+      {
+        "rule": "OKF-0.2-C3-LOG",
+        "severity": "error",
+        "path": "log.md"
+      }
+    ]
+  },
+  "crypto_bitcoin": {
+    "status": "pass",
+    "dimensions": {
+      "core_conformance": "pass",
+      "evaluation_boundary": "pass",
+      "advisory_guidance": "clear"
+    },
+    "metrics": {
+      "markdown_documents": 15,
+      "concept_documents": 9,
+      "reserved_documents": 6,
+      "errors": 0,
+      "core_errors": 0,
+      "boundary_errors": 0,
+      "warnings": 0
+    },
+    "findings": []
+  },
+  "ga4": {
+    "status": "pass",
+    "dimensions": {
+      "core_conformance": "pass",
+      "evaluation_boundary": "pass",
+      "advisory_guidance": "clear"
+    },
+    "metrics": {
+      "markdown_documents": 14,
+      "concept_documents": 9,
+      "reserved_documents": 5,
+      "errors": 0,
+      "core_errors": 0,
+      "boundary_errors": 0,
+      "warnings": 0
+    },
+    "findings": []
+  },
+  "stackoverflow": {
+    "status": "pass",
+    "dimensions": {
+      "core_conformance": "pass",
+      "evaluation_boundary": "pass",
+      "advisory_guidance": "review"
+    },
+    "metrics": {
+      "markdown_documents": 32,
+      "concept_documents": 26,
+      "reserved_documents": 6,
+      "errors": 0,
+      "core_errors": 0,
+      "boundary_errors": 0,
+      "warnings": 8
+    },
+    "findings": [
+      {
+        "rule": "OKF-0.2-A-TAGS",
+        "severity": "warning",
+        "path": "datasets/stackoverflow.md"
+      },
+      {
+        "rule": "OKF-0.2-A-TAGS",
+        "severity": "warning",
+        "path": "tables/posts_answers.md"
+      },
+      {
+        "rule": "OKF-0.2-A-TAGS",
+        "severity": "warning",
+        "path": "tables/posts_moderator_nomination.md"
+      },
+      {
+        "rule": "OKF-0.2-A-TAGS",
+        "severity": "warning",
+        "path": "tables/posts_questions.md"
+      },
+      {
+        "rule": "OKF-0.2-A-TAGS",
+        "severity": "warning",
+        "path": "tables/posts_wiki_placeholder.md"
+      },
+      {
+        "rule": "OKF-0.2-A-TAGS",
+        "severity": "warning",
+        "path": "tables/stackoverflow_posts.md"
+      },
+      {
+        "rule": "OKF-0.2-A-TAGS",
+        "severity": "warning",
+        "path": "tables/users.md"
+      },
+      {
+        "rule": "OKF-0.2-A-TAGS",
+        "severity": "warning",
+        "path": "tables/votes.md"
+      }
+    ]
+  }
+}
