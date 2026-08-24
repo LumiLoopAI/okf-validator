@@ -92,7 +92,7 @@ function assertValidationSchema(report: unknown): asserts report is ValidationRe
   ];
   for (const key of required) assert.ok(key in value, `missing report field ${key}`);
   assert.equal(value.schema_version, "okf-validation-report.v1");
-  assert.match(String(value.validator), /^lumipad-okf-validator\/\d+\.\d+\.\d+$/);
+  assert.match(String(value.validator), /^okf-validator\/\d+\.\d+\.\d+$/);
   assert.ok(value.status === "pass" || value.status === "fail");
   assert.ok(typeof value.bundle === "string" && value.bundle.length > 0);
   assert.ok(typeof value.expected_okf_version === "string" && value.expected_okf_version.length > 0);

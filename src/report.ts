@@ -109,7 +109,7 @@ export function createValidationReport(result: EngineResult): ValidationReport {
 
   return {
     schema_version: "okf-validation-report.v1",
-    validator: `lumipad-okf-validator/${packageMetadata.version}`,
+    validator: `okf-validator/${packageMetadata.version}`,
     status: failed ? "fail" : "pass",
     bundle: result.bundleName,
     expected_okf_version: result.expectedVersion,
