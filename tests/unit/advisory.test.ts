@@ -39,3 +39,49 @@ test("timestamp-valued fields require an ISO 8601 datetime with an explicit UTC 
     assert.ok(!valid.includes(rule), `did not expect ${rule}`);
   }
 });
+
+test("log frontmatter is advisory while post-frontmatter date headings remain core", async () => {
+  const valid = await validateBundle({
+    provider: new MemoryProvider(new Map([["log.md", [
+      "---",
+      "type: Log",
+      "---",
+      "# Bundle history",
+      "",
+      "## 2026-08-24",
+      "- Updated the bundle.",
+      "",
+      "## 2026-08-23",
+      "- Created the bundle.",
+      "",
+    ].join("\n")]])),
+    bundle: "log-frontmatter-valid",
+    contractPath,
+    expectedVersion: "0.2",
+  });
+  assert.equal(valid.status, "pass");
+  assert.equal(valid.dimensions.core_conformance, "pass");
+  assert.equal(valid.dimensions.advisory_guidance, "review");
+  assert.ok(valid.findings.some(({ rule, severity }) => rule === "OKF-0.2-A-LOG-FRONTMATTER" && severity === "warning"));
+  assert.ok(!valid.findings.some(({ rule }) => rule === "OKF-0.2-C3-LOG"));
+
+  const invalid = await validateBundle({
+    provider: new MemoryProvider(new Map([["log.md", [
+      "---",
+      "type: Log",
+      "---",
+      "# Bundle history",
+      "",
+      "## August 24, 2026",
+      "- Updated the bundle.",
+      "",
+    ].join("\n")]])),
+    bundle: "log-frontmatter-invalid-date",
+    contractPath,
+    expectedVersion: "0.2",
+  });
+  assert.equal(invalid.status, "fail");
+  assert.equal(invalid.dimensions.core_conformance, "fail");
+  assert.ok(invalid.findings.some(({ rule, severity }) => rule === "OKF-0.2-C3-LOG" && severity === "error"));
+  assert.ok(invalid.findings.some(({ rule, severity }) => rule === "OKF-0.2-A-LOG-FRONTMATTER" && severity === "warning"));
+});

@@ -1,8 +1,8 @@
 {
   "acme_retail": {
-    "status": "fail",
+    "status": "pass",
     "dimensions": {
-      "core_conformance": "fail",
+      "core_conformance": "pass",
       "evaluation_boundary": "pass",
       "advisory_guidance": "review"
     },
@@ -10,10 +10,10 @@
       "markdown_documents": 17,
       "concept_documents": 9,
       "reserved_documents": 8,
-      "errors": 1,
-      "core_errors": 1,
+      "errors": 0,
+      "core_errors": 0,
       "boundary_errors": 0,
-      "warnings": 12
+      "warnings": 13
     },
     "findings": [
       {
@@ -77,8 +77,8 @@
         "path": "tables/orders.md"
       },
       {
-        "rule": "OKF-0.2-C3-LOG",
-        "severity": "error",
+        "rule": "OKF-0.2-A-LOG-FRONTMATTER",
+        "severity": "warning",
         "path": "log.md"
       }
     ]

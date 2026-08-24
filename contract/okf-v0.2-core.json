@@ -1,5 +1,5 @@
 {
-  "contract_version": "2.1.0",
+  "contract_version": "2.2.0",
   "okf_version": "0.2",
   "upstream": {
     "repository": "https://github.com/GoogleCloudPlatform/open-knowledge-format.git",
@@ -70,7 +70,7 @@
     },
     {
       "id": "OKF-0.2-C3-LOG",
-      "description": "A log.md is reserved, has no frontmatter, and uses newest-first ISO 8601 date-grouped Markdown entries when present.",
+      "description": "A log.md is reserved and uses newest-first ISO 8601 YYYY-MM-DD date-grouped Markdown entries when present.",
       "specification": {
         "sections": [
           "\u00a73.1",
@@ -214,6 +214,7 @@
     "optional v0.2 field shape",
     "internal path and fragment resolvability",
     "source identity uniqueness",
-    "portable bundle contents"
+    "portable bundle contents",
+    "log-file frontmatter"
   ]
 }

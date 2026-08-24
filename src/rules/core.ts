@@ -132,13 +132,7 @@ export const coreRules: readonly Rule[] = [
         return [finding(this.id, "error", document.path, document.utf8Error, 1)];
       }
       const parsed = document.frontmatter!;
-      if (parsed.error !== undefined) {
-        return [finding(this.id, "error", document.path, parsed.error.message, parsed.error.line)];
-      }
       const findings: Finding[] = [];
-      if (parsed.present) {
-        findings.push(finding(this.id, "error", document.path, "log.md must not contain frontmatter", 1));
-      }
       const lines = markdownLinesWithoutFences(parsed.body);
       const firstContent = lines.find(({ line }) => line.trim().length > 0);
       if (firstContent === undefined || !/^#\s+\S/.test(firstContent.line.trimStart())) {

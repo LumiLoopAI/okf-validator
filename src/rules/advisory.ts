@@ -148,6 +148,16 @@ function validateWindow(value: unknown): boolean {
 
 export const advisoryRules: readonly Rule[] = [
   {
+    id: "OKF-0.2-A-LOG-FRONTMATTER",
+    dimension: "advisory",
+    scope: "document",
+    check(ctx) {
+      const document = ctx.document;
+      if (document?.kind !== "log" || document.frontmatter?.present !== true) return [];
+      return [finding(this.id, "warning", document.path, "log.md carries a frontmatter block; the OKF specification does not define frontmatter for log files", 1)];
+    },
+  },
+  {
     id: "OKF-0.2-A-FIELD",
     dimension: "advisory",
     scope: "document",

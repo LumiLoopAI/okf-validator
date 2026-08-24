@@ -8,7 +8,7 @@ import { boundaryRules } from "./rules/boundary.js";
 import { coreRules } from "./rules/core.js";
 import type { Finding, OkfContract, Rule, RuleDimension } from "./rules/types.js";
 
-const SUPPORTED_CONTRACT_VERSION = "2.1.0";
+const SUPPORTED_CONTRACT_VERSION = "2.2.0";
 
 export class UnevaluableError extends Error {
   override readonly name = "UnevaluableError";
