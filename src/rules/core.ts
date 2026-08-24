@@ -136,8 +136,11 @@ export const coreRules: readonly Rule[] = [
       const lines = markdownLinesWithoutFences(parsed.body);
       const firstContent = lines.find(({ line }) => line.trim().length > 0);
       if (firstContent === undefined || !/^#\s+\S/.test(firstContent.line.trimStart())) {
+        const line = firstContent === undefined
+          ? parsed.bodyStartLine
+          : firstContent.number + parsed.bodyStartLine - 1;
         findings.push(
-          finding(this.id, "error", document.path, "log must begin with a level-one heading", parsed.bodyStartLine),
+          finding(this.id, "error", document.path, "log must begin with a level-one heading", line),
         );
       }
       const headings = lines.flatMap(({ line, number }) => {
@@ -158,10 +161,11 @@ export const coreRules: readonly Rule[] = [
         }
       }
       const valid = headings.filter(({ value }) => validDate(value));
-      const sorted = [...valid].sort((left, right) => right.value.localeCompare(left.value));
-      if (valid.some((heading, index) => heading.value !== sorted[index]?.value)) {
+      const outOfOrder = valid.find((heading, index) =>
+        index > 0 && valid[index - 1]!.value.localeCompare(heading.value) < 0);
+      if (outOfOrder !== undefined) {
         findings.push(
-          finding(this.id, "error", document.path, "log date headings must be newest first", valid[0]?.number),
+          finding(this.id, "error", document.path, "log date headings must be newest first", outOfOrder.number),
         );
       }
       return findings;

@@ -117,7 +117,9 @@ function assertValidationSchema(report: unknown): asserts report is ValidationRe
     assert.ok(finding.severity === "error" || finding.severity === "warning");
     assert.equal(typeof finding.path, "string");
     assert.ok(typeof finding.message === "string" && finding.message.length > 0);
-    assert.equal("line" in finding, false, "v1 report must not expose library-only line positions");
+    if ("line" in finding) {
+      assert.ok(Number.isInteger(finding.line) && Number(finding.line) >= 1, "finding line must be a 1-based integer");
+    }
   }
   assert.ok(Array.isArray(value.recommendations));
   assert.ok((value.recommendations as unknown[]).every((item) => item !== null && typeof item === "object" && !Array.isArray(item)));

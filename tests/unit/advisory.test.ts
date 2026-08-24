@@ -82,6 +82,24 @@ test("log frontmatter is advisory while post-frontmatter date headings remain co
   });
   assert.equal(invalid.status, "fail");
   assert.equal(invalid.dimensions.core_conformance, "fail");
-  assert.ok(invalid.findings.some(({ rule, severity }) => rule === "OKF-0.2-C3-LOG" && severity === "error"));
+  assert.ok(invalid.findings.some(({ rule, severity, line }) =>
+    rule === "OKF-0.2-C3-LOG" && severity === "error" && line === 6));
   assert.ok(invalid.findings.some(({ rule, severity }) => rule === "OKF-0.2-A-LOG-FRONTMATTER" && severity === "warning"));
+
+  const outOfOrder = await validateBundle({
+    provider: new MemoryProvider(new Map([["log.md", [
+      "# Bundle history",
+      "",
+      "## 2026-08-23",
+      "- Created the bundle.",
+      "## 2026-08-24",
+      "- Updated the bundle.",
+      "",
+    ].join("\n")]])),
+    bundle: "log-out-of-order",
+    contractPath,
+    expectedVersion: "0.2",
+  });
+  assert.ok(outOfOrder.findings.some(({ rule, message, line }) =>
+    rule === "OKF-0.2-C3-LOG" && message === "log date headings must be newest first" && line === 5));
 });

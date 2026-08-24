@@ -79,9 +79,8 @@ interface Finding {
 ```
 
 `rule`, `severity`, `path`, `message` map 1:1 onto the report schema's
-required finding fields. `line` is library-surface only for now — the v1
-report stays byte-compatible with the oracle; richer spans ship with a
-future report schema version, not by loosening v1.
+required finding fields. When a finding has an addressable source line,
+the optional 1-based `line` is also persisted in the v1 report.
 
 ## Rule inventory (contract 2.1.0)
 

@@ -65,8 +65,8 @@ okf-validator validate \
   --output validation.json
 ```
 
-Findings identify the rule, severity, path, and message; the JSON report
-conforms to `okf-validation-report.v1`.
+Findings identify the rule, severity, path, message, and an optional 1-based
+line; the JSON report conforms to `okf-validation-report.v1`.
 
 ## Provenance
 

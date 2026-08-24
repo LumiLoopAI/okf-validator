@@ -1,5 +1,9 @@
 # Contract changelog
 
+## Unreleased
+
+- Added an optional 1-based `line` field to findings in `okf-validation-report.v1`.
+
 ## 2.2.0
 
 - Demoted `log.md` frontmatter from a C3-LOG core failure to advisory guidance to match OKF specification §9.

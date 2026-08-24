@@ -132,14 +132,19 @@ function inspectDestination(ctx: RuleContext, source: BundleDocument, destinatio
   return undefined;
 }
 
-function pathFieldDestinations(data: Record<string, unknown>): Destination[] {
-  const values: unknown[] = [data.resource, data.computation];
-  if (isMapping(data.executor)) values.push(data.executor.resource);
-  if (isMapping(data.attester)) values.push(data.attester.resource);
+function pathFieldDestinations(document: BundleDocument, data: Record<string, unknown>): Destination[] {
+  const values: { value: unknown; key: string }[] = [
+    { value: data.resource, key: "resource" },
+    { value: data.computation, key: "computation" },
+  ];
+  if (isMapping(data.executor)) values.push({ value: data.executor.resource, key: "executor" });
+  if (isMapping(data.attester)) values.push({ value: data.attester.resource, key: "attester" });
   if (Array.isArray(data.sources)) {
-    for (const source of data.sources) if (isMapping(source)) values.push(source.resource);
+    for (const source of data.sources) {
+      if (isMapping(source)) values.push({ value: source.resource, key: "sources" });
+    }
   }
-  return values.filter(pathLike).map((value) => ({ value }));
+  return values.flatMap(({ value, key }) => pathLike(value) ? [{ value, line: lineFor(document, key) }] : []);
 }
 
 function validateWindow(value: unknown): boolean {
@@ -315,7 +320,7 @@ export const advisoryRules: readonly Rule[] = [
         const mirroredReference = document.path.split("/").includes("_references") && posix.basename(document.path) !== "index.md";
         const bodyDestinations = mirroredReference ? [] : markdownDestinations(document.text);
         const data = conceptData(document);
-        const destinations = [...bodyDestinations, ...(data === undefined ? [] : pathFieldDestinations(data))];
+        const destinations = [...bodyDestinations, ...(data === undefined ? [] : pathFieldDestinations(document, data))];
         const unique = new Map<string, Destination>();
         for (const destination of destinations) if (!unique.has(destination.value)) unique.set(destination.value, destination);
         for (const destination of [...unique.values()].sort((left, right) => left.value < right.value ? -1 : left.value > right.value ? 1 : 0)) {

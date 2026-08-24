@@ -8,6 +8,7 @@ interface SnapshotFinding {
   rule: string;
   severity: "error" | "warning";
   path: string;
+  line?: number;
 }
 
 interface BundleSnapshot {
@@ -28,6 +29,9 @@ function compareFindings(left: SnapshotFinding, right: SnapshotFinding): number 
   if (left.rule !== right.rule) return left.rule < right.rule ? -1 : 1;
   if (left.severity !== right.severity) return left.severity < right.severity ? -1 : 1;
   if (left.path !== right.path) return left.path < right.path ? -1 : 1;
+  const leftLine = left.line ?? 0;
+  const rightLine = right.line ?? 0;
+  if (leftLine !== rightLine) return leftLine - rightLine;
   return 0;
 }
 
@@ -48,7 +52,7 @@ async function currentSnapshots(): Promise<InteropSnapshots> {
       dimensions: { ...report.dimensions },
       metrics: { ...report.metrics },
       findings: report.findings
-        .map(({ rule, severity, path }) => ({ rule, severity, path }))
+        .map(({ rule, severity, path, line }) => ({ rule, severity, path, ...(line === undefined ? {} : { line }) }))
         .sort(compareFindings),
     };
   }

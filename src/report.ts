@@ -9,6 +9,7 @@ export interface ReportFinding {
   severity: "error" | "warning";
   path: string;
   message: string;
+  line?: number;
 }
 
 export interface Recommendation {
@@ -95,6 +96,7 @@ export function createValidationReport(result: EngineResult): ValidationReport {
     severity: item.severity === "error" ? "error" : "warning",
     path: item.path,
     message: item.message,
+    ...(item.line === undefined ? {} : { line: item.line }),
   }));
   const coreErrors = result.classifiedFindings.filter(
     ({ finding, dimension }) => dimension === "core" && finding.severity === "error",
