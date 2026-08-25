@@ -19,6 +19,13 @@ export {
 } from "./engine.js";
 export { createValidationReport, serializeReport, type Recommendation, type ReportFinding, type ValidationReport } from "./report.js";
 export { buildManifest, verifyManifest, type BundleManifest, type IntegrityReport, type ManifestEntry } from "./verify.js";
+export {
+  listOkfSpecSections,
+  readOkfSpecOverview,
+  readOkfSpecSection,
+  type OkfSpecSection,
+  type OkfSpecSectionSummary,
+} from "./spec.js";
 export type { Finding, OkfContract, Rule, RuleContext, RuleDimension, RuleScope } from "./rules/types.js";
 
 export async function validateBundle(options: EvaluateBundleOptions): Promise<ValidationReport> {

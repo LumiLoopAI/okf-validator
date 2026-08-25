@@ -84,6 +84,35 @@ Findings identify the rule, severity, path, message, an optional 1-based line,
 and, when available, the rule's `requirement` and canonical `specSections`;
 the JSON report conforms to `okf-validation-report.v1`.
 
+### Specification access
+
+The package ships the exact canonical specification revision pinned by the
+rule contract. Consumers can list its Markdown sections or retrieve the prose
+behind a finding without network access:
+
+```ts
+import {
+  listOkfSpecSections,
+  readOkfSpecOverview,
+  readOkfSpecSection,
+} from '@lumiloop/okf-validator';
+
+const sections = listOkfSpecSections();
+// [{ id: 'open-knowledge-format-okf', title: 'Open Knowledge Format (OKF)', level: 1 }, ...]
+
+const frontmatter = readOkfSpecSection('§4.1');
+// { id: '4.1', title: 'Frontmatter', text: '### 4.1 Frontmatter\n...' }
+
+readOkfSpecSection('§11 item 2'); // resolves §11; unknown lookups return null
+const overview = readOkfSpecOverview(); // §2 Terminology plus §11 Conformance
+```
+
+Lookups accept section numbers, a leading `§`, contract-style `item` suffixes,
+and case-insensitive heading titles. The authoring-oriented title
+`Concept documents` resolves to §4.1. Unnumbered headings use deterministic
+lowercase slugs as ids. `spec/SPEC.md` is vendored verbatim; its provenance and
+update constraint are recorded in `spec/PROVENANCE.md`.
+
 ## Provenance
 
 This implementation succeeds the Ruby validator at

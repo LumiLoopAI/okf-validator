@@ -21,6 +21,7 @@ src/
   provider.ts        FileProvider interface + DirectoryProvider + MemoryProvider
   frontmatter.ts     YAML frontmatter extraction (js-yaml), line-position aware
   bundle.ts          Bundle walk: enumerate docs, classify reserved files
+  spec.ts            Offline access to heading-indexed canonical specification prose
   rules/
     types.ts         Rule module contract
     core.ts          OKF-0.2-C1, C2, C3-INDEX, C3-LOG
@@ -34,7 +35,20 @@ src/
 tests/
   harness.test.ts    Runs every case in cases.json against the library + CLI
   unit/*.test.ts     Focused unit tests per module
+spec/
+  SPEC.md            Byte-verbatim canonical spec at the contract's upstream pin
+  PROVENANCE.md      Source revision, digest, licence, and update constraint
 ```
+
+## Packaged specification
+
+The rule contract and canonical prose are one versioned unit. `spec/SPEC.md`
+is copied byte-for-byte from the repository, path, and commit declared in
+`contract/okf-v0.2-core.json`; a unit test hashes the packaged file and compares
+it with `upstream.sha256`. Updating either side without the other therefore
+fails the suite. `src/spec.ts` parses only real ATX headings outside fenced code
+blocks, preserves document order, and exposes section text through the public
+library API without network access.
 
 ## FileProvider
 
