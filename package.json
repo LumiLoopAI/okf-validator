@@ -11,6 +11,7 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "build": "tsc --project tsconfig.json",
+    "prepare": "npm run build",
     "test": "npm run build && tsc --project tsconfig.tests.json && node --test --enable-source-maps .test-dist/*.test.js .test-dist/unit/*.test.js",
     "clean": "rm -rf dist"
   },
