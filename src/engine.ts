@@ -1,14 +1,14 @@
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { isMapping } from "./frontmatter.js";
-import { loadBundle, type Bundle } from "./bundle.js";
+import { loadBundle, loadDocument, type Bundle } from "./bundle.js";
 import type { FileProvider } from "./provider.js";
 import { advisoryRules } from "./rules/advisory.js";
 import { boundaryRules } from "./rules/boundary.js";
 import { coreRules } from "./rules/core.js";
 import type { Finding, OkfContract, Rule, RuleDimension } from "./rules/types.js";
 
-const SUPPORTED_CONTRACT_VERSION = "2.2.0";
+const SUPPORTED_CONTRACT_VERSION = "2.3.0";
 
 export class UnevaluableError extends Error {
   override readonly name = "UnevaluableError";
@@ -43,6 +43,19 @@ export interface EvaluateBundleOptions {
   expectedVersion: string;
   bundle?: string;
   rules?: readonly Rule[];
+}
+
+export interface ValidateDocumentOptions {
+  provider: FileProvider;
+  path: string;
+  contractPath: string;
+  expectedVersion: string;
+  rules?: readonly Rule[];
+}
+
+export interface DocumentValidationResult {
+  path: string;
+  findings: readonly Finding[];
 }
 
 function sha256(bytes: Uint8Array): string {
@@ -105,6 +118,71 @@ function declaredVersion(bundle: Bundle): string | null {
   return String(parsed.data.okf_version);
 }
 
+function contractMetadata(contract: OkfContract, rule: Rule): Pick<Rule, "requirement" | "specSections"> {
+  if (rule.dimension === "advisory") {
+    return {
+      ...(rule.requirement === undefined ? {} : { requirement: rule.requirement }),
+      ...(rule.specSections === undefined ? {} : { specSections: [...rule.specSections] }),
+    };
+  }
+  const declaration = [...contract.core_rules, ...contract.evaluation_requirements]
+    .find(({ id }) => id === rule.id);
+  if (declaration === undefined) return { requirement: undefined, specSections: undefined };
+  const specification = isMapping(declaration.specification) ? declaration.specification : undefined;
+  const sections = specification?.sections;
+  return {
+    requirement: typeof declaration.description === "string" ? declaration.description : undefined,
+    specSections: Array.isArray(sections) && sections.every((section) => typeof section === "string")
+      ? [...sections] as string[]
+      : undefined,
+  };
+}
+
+function resolvedRule(rule: Rule, contract: OkfContract): Rule {
+  return { ...rule, ...contractMetadata(contract, rule) };
+}
+
+function enrichedFinding(item: Finding, rule: Rule): Finding {
+  const requirement = item.requirement ?? rule.requirement;
+  const specSections = item.specSections ?? rule.specSections;
+  return {
+    ...item,
+    ...(requirement === undefined ? {} : { requirement }),
+    ...(specSections === undefined ? {} : { specSections: [...specSections] }),
+  };
+}
+
+function runRules(
+  bundle: Bundle,
+  contract: ContractSelection,
+  contractPath: string,
+  expectedVersion: string,
+  selectedRules: readonly Rule[],
+  onlyDocument?: Bundle["documents"][number],
+): { classified: ClassifiedFinding[]; rules: Rule[] } {
+  const rules = selectedRules.map((rule) => resolvedRule(rule, contract.contract));
+  const classified: ClassifiedFinding[] = [];
+  const baseContext = { bundle, contract: contract.contract, contractPath, expectedVersion };
+
+  for (const rule of rules) {
+    if (rule.scope === "bundle") {
+      if (onlyDocument !== undefined) continue;
+      for (const item of rule.check(baseContext)) {
+        classified.push({ finding: enrichedFinding(item, rule), dimension: rule.dimension });
+      }
+    } else {
+      const documents = onlyDocument === undefined ? bundle.documents : [onlyDocument];
+      for (const document of documents) {
+        for (const item of rule.check({ ...baseContext, document })) {
+          classified.push({ finding: enrichedFinding(item, rule), dimension: rule.dimension });
+        }
+      }
+    }
+  }
+  classified.sort((left, right) => compareFindings(left.finding, right.finding));
+  return { classified, rules };
+}
+
 export const defaultRules: readonly Rule[] = [...coreRules, ...boundaryRules, ...advisoryRules];
 
 export async function evaluateBundle(options: EvaluateBundleOptions): Promise<EngineResult> {
@@ -116,27 +194,13 @@ export async function evaluateBundle(options: EvaluateBundleOptions): Promise<En
   } catch (error) {
     throw new UnevaluableError(`could not read bundle: ${error instanceof Error ? error.message : String(error)}`);
   }
-  const rules = options.rules ?? defaultRules;
-  const classified: ClassifiedFinding[] = [];
-  const baseContext = {
+  const { classified, rules } = runRules(
     bundle,
-    contract: contract.contract,
-    contractPath: contract.path,
-    expectedVersion: options.expectedVersion,
-  };
-
-  for (const rule of rules) {
-    if (rule.scope === "bundle") {
-      for (const item of rule.check(baseContext)) classified.push({ finding: item, dimension: rule.dimension });
-    } else {
-      for (const document of bundle.documents) {
-        for (const item of rule.check({ ...baseContext, document })) {
-          classified.push({ finding: item, dimension: rule.dimension });
-        }
-      }
-    }
-  }
-  classified.sort((left, right) => compareFindings(left.finding, right.finding));
+    contract,
+    contract.path,
+    options.expectedVersion,
+    options.rules ?? defaultRules,
+  );
   return {
     bundle,
     bundleName: options.bundle ?? ("root" in options.provider && typeof options.provider.root === "string" ? options.provider.root : "<memory>"),
@@ -147,4 +211,28 @@ export async function evaluateBundle(options: EvaluateBundleOptions): Promise<En
     classifiedFindings: classified,
     evaluatedRules: [...rules],
   };
+}
+
+export async function validateDocument(options: ValidateDocumentOptions): Promise<DocumentValidationResult> {
+  if (options.expectedVersion.trim().length === 0) throw new UnevaluableError("expected OKF version must not be empty");
+  const contract = await loadContract(options.contractPath);
+  let document: Bundle["documents"][number];
+  try {
+    document = await loadDocument(options.provider, options.path);
+  } catch (error) {
+    throw new UnevaluableError(
+      `could not read document ${JSON.stringify(options.path)}: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+  const bundle: Bundle = { files: [document], documents: [document], paths: new Set([document.path]) };
+  const documentRules = (options.rules ?? defaultRules).filter(({ scope }) => scope === "document");
+  const { classified } = runRules(
+    bundle,
+    contract,
+    contract.path,
+    options.expectedVersion,
+    documentRules,
+    document,
+  );
+  return { path: document.path, findings: classified.map(({ finding }) => finding) };
 }

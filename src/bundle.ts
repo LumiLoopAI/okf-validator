@@ -33,6 +33,19 @@ function decodeUtf8(bytes: Uint8Array): string {
   return new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
 }
 
+export async function loadDocument(provider: FileProvider, path: string): Promise<BundleDocument> {
+  if (!path.endsWith(".md")) throw new Error(`document path must name a Markdown file: ${JSON.stringify(path)}`);
+  const bytes = Uint8Array.from(await provider.read(path));
+  const document: BundleDocument = { path, bytes, kind: documentKind(path) };
+  try {
+    document.text = decodeUtf8(bytes);
+    document.frontmatter = extractFrontmatter(document.text);
+  } catch {
+    document.utf8Error = "document is not valid UTF-8";
+  }
+  return document;
+}
+
 export async function loadBundle(provider: FileProvider): Promise<Bundle> {
   const listed = await provider.list();
   const paths = [...listed].sort();
@@ -41,19 +54,13 @@ export async function loadBundle(provider: FileProvider): Promise<Bundle> {
   const files: BundleFile[] = [];
   const documents: BundleDocument[] = [];
   for (const path of paths) {
-    const bytes = Uint8Array.from(await provider.read(path));
-    const file = { path, bytes };
-    files.push(file);
-    if (!path.endsWith(".md")) continue;
-
-    const document: BundleDocument = { ...file, kind: documentKind(path) };
-    try {
-      document.text = decodeUtf8(bytes);
-      document.frontmatter = extractFrontmatter(document.text);
-    } catch {
-      document.utf8Error = "document is not valid UTF-8";
+    if (path.endsWith(".md")) {
+      const document = await loadDocument(provider, path);
+      files.push(document);
+      documents.push(document);
+    } else {
+      files.push({ path, bytes: Uint8Array.from(await provider.read(path)) });
     }
-    documents.push(document);
   }
 
   return { files, documents, paths: new Set(paths) };

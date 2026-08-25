@@ -149,6 +149,15 @@
           "line": {
             "type": "integer",
             "minimum": 1
+          },
+          "requirement": {
+            "type": "string"
+          },
+          "specSections": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "additionalProperties": true

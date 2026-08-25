@@ -1,5 +1,5 @@
 {
-  "contract_version": "2.2.0",
+  "contract_version": "2.3.0",
   "okf_version": "0.2",
   "upstream": {
     "repository": "https://github.com/GoogleCloudPlatform/open-knowledge-format.git",
@@ -22,10 +22,10 @@
           144,
           153,
           159,
-          733,
-          738
+          736,
+          741
         ],
-        "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L134-L159"
+        "url": "https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md#L134-L159"
       }
     },
     {
@@ -39,10 +39,10 @@
         "lines": [
           175,
           188,
-          733,
-          740
+          736,
+          743
         ],
-        "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L175-L188"
+        "url": "https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md#L175-L188"
       }
     },
     {
@@ -58,14 +58,14 @@
         "lines": [
           134,
           144,
-          502,
-          526,
-          733,
-          741,
-          763,
-          777
+          505,
+          529,
+          736,
+          744,
+          766,
+          780
         ],
-        "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L502-L526"
+        "url": "https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md#L505-L529"
       }
     },
     {
@@ -80,12 +80,12 @@
         "lines": [
           134,
           144,
-          530,
-          549,
-          733,
-          741
+          533,
+          552,
+          736,
+          744
         ],
-        "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L530-L549"
+        "url": "https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md#L533-L552"
       }
     }
   ],
@@ -104,10 +104,10 @@
           203,
           277,
           282,
-          743,
-          755
+          746,
+          758
         ],
-        "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L743-L759"
+        "url": "https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md#L746-L762"
       }
     },
     {
@@ -121,10 +121,10 @@
         "lines": [
           177,
           188,
-          752,
-          759
+          755,
+          762
         ],
-        "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L175-L188"
+        "url": "https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md#L175-L188"
       }
     },
     {
@@ -138,10 +138,10 @@
         "lines": [
           205,
           207,
-          752,
-          759
+          755,
+          762
         ],
-        "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L205-L207"
+        "url": "https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md#L205-L207"
       }
     },
     {
@@ -153,12 +153,12 @@
           "\u00a711"
         ],
         "lines": [
-          461,
-          463,
-          752,
-          759
+          464,
+          466,
+          755,
+          762
         ],
-        "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L461-L463"
+        "url": "https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md#L464-L466"
       }
     },
     {
@@ -170,12 +170,12 @@
           "\u00a711"
         ],
         "lines": [
-          504,
-          526,
-          752,
-          759
+          507,
+          529,
+          755,
+          762
         ],
-        "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L502-L526"
+        "url": "https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md#L505-L529"
       }
     },
     {
@@ -187,27 +187,43 @@
           "\u00a711"
         ],
         "lines": [
-          385,
-          396,
-          743,
-          750
+          388,
+          399,
+          746,
+          753
         ],
-        "url": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/930b65fc3f5619d5d0591f88c72ebae8b848d60d/okf/SPEC.md#L385-L396"
+        "url": "https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md#L388-L399"
       }
     }
   ],
   "evaluation_requirements": [
     {
       "id": "BOUNDARY-CONTRACT",
-      "description": "The selected contract version exactly matches the evaluator's declared expected version; selection never falls back silently."
+      "description": "The selected contract version exactly matches the evaluator's declared expected version; selection never falls back silently.",
+      "specification": {
+        "url": "https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md"
+      }
     },
     {
       "id": "BOUNDARY-VERSION",
-      "description": "When a bundle declares okf_version, it matches the explicitly selected contract; absence is permitted by OKF 0.2."
+      "description": "When a bundle declares okf_version, it matches the explicitly selected contract; absence is permitted by OKF 0.2.",
+      "specification": {
+        "sections": [
+          "§12"
+        ],
+        "lines": [
+          766,
+          780
+        ],
+        "url": "https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md#L766-L780"
+      }
     },
     {
       "id": "BOUNDARY-IMMUTABLE",
-      "description": "The complete input tree is identical before and after validation."
+      "description": "The complete input tree is identical before and after validation.",
+      "specification": {
+        "url": "https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/ad30107c31c06aec8a7d5636e0d1058118604e6f/SPEC.md"
+      }
     }
   ],
   "advisory_checks": [

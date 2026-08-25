@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 2.3.0
+
+- Re-pointed rule specification URLs and line anchors to the pinned canonical `open-knowledge-format@ad30107` specification.
+- Added optional `requirement` and `specSections` context to findings in `okf-validation-report.v1`.
 - Added an optional 1-based `line` field to findings in `okf-validation-report.v1`.
 
 ## 2.2.0

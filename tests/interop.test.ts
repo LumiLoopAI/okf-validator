@@ -9,6 +9,8 @@ interface SnapshotFinding {
   severity: "error" | "warning";
   path: string;
   line?: number;
+  requirement?: string;
+  specSections?: readonly string[];
 }
 
 interface BundleSnapshot {
@@ -52,7 +54,14 @@ async function currentSnapshots(): Promise<InteropSnapshots> {
       dimensions: { ...report.dimensions },
       metrics: { ...report.metrics },
       findings: report.findings
-        .map(({ rule, severity, path, line }) => ({ rule, severity, path, ...(line === undefined ? {} : { line }) }))
+        .map(({ rule, severity, path, line, requirement, specSections }) => ({
+          rule,
+          severity,
+          path,
+          ...(line === undefined ? {} : { line }),
+          ...(requirement === undefined ? {} : { requirement }),
+          ...(specSections === undefined ? {} : { specSections: [...specSections] }),
+        }))
         .sort(compareFindings),
     };
   }

@@ -20,79 +20,152 @@
         "rule": "OKF-0.2-A-LINK",
         "severity": "warning",
         "path": "computations/gross-margin-period.md",
-        "line": 10
+        "line": 10,
+        "requirement": "Internal Markdown links and path-valued fields should use inspectable targets, while unresolved targets remain conformant.",
+        "specSections": [
+          "§6.1",
+          "§6.2",
+          "§11"
+        ]
       },
       {
         "rule": "OKF-0.2-A-LINK",
         "severity": "warning",
         "path": "computations/gross-margin-period.md",
-        "line": 13
+        "line": 13,
+        "requirement": "Internal Markdown links and path-valued fields should use inspectable targets, while unresolved targets remain conformant.",
+        "specSections": [
+          "§6.1",
+          "§6.2",
+          "§11"
+        ]
       },
       {
         "rule": "OKF-0.2-A-LINK",
         "severity": "warning",
         "path": "computations/gross-margin-period.md",
-        "line": 20
+        "line": 20,
+        "requirement": "Internal Markdown links and path-valued fields should use inspectable targets, while unresolved targets remain conformant.",
+        "specSections": [
+          "§6.1",
+          "§6.2",
+          "§11"
+        ]
       },
       {
         "rule": "OKF-0.2-A-LINK",
         "severity": "warning",
         "path": "computations/gross-margin-period.md",
-        "line": 20
+        "line": 20,
+        "requirement": "Internal Markdown links and path-valued fields should use inspectable targets, while unresolved targets remain conformant.",
+        "specSections": [
+          "§6.1",
+          "§6.2",
+          "§11"
+        ]
       },
       {
         "rule": "OKF-0.2-A-LINK",
         "severity": "warning",
         "path": "computations/revenue-ytd.md",
-        "line": 9
+        "line": 9,
+        "requirement": "Internal Markdown links and path-valued fields should use inspectable targets, while unresolved targets remain conformant.",
+        "specSections": [
+          "§6.1",
+          "§6.2",
+          "§11"
+        ]
       },
       {
         "rule": "OKF-0.2-A-LINK",
         "severity": "warning",
         "path": "computations/revenue-ytd.md",
-        "line": 12
+        "line": 12,
+        "requirement": "Internal Markdown links and path-valued fields should use inspectable targets, while unresolved targets remain conformant.",
+        "specSections": [
+          "§6.1",
+          "§6.2",
+          "§11"
+        ]
       },
       {
         "rule": "OKF-0.2-A-LINK",
         "severity": "warning",
         "path": "computations/revenue-ytd.md",
-        "line": 19
+        "line": 19,
+        "requirement": "Internal Markdown links and path-valued fields should use inspectable targets, while unresolved targets remain conformant.",
+        "specSections": [
+          "§6.1",
+          "§6.2",
+          "§11"
+        ]
       },
       {
         "rule": "OKF-0.2-A-LINK",
         "severity": "warning",
         "path": "computations/revenue-ytd.md",
-        "line": 19
+        "line": 19,
+        "requirement": "Internal Markdown links and path-valued fields should use inspectable targets, while unresolved targets remain conformant.",
+        "specSections": [
+          "§6.1",
+          "§6.2",
+          "§11"
+        ]
       },
       {
         "rule": "OKF-0.2-A-LINK",
         "severity": "warning",
         "path": "metrics/gross-margin.md",
-        "line": 15
+        "line": 15,
+        "requirement": "Internal Markdown links and path-valued fields should use inspectable targets, while unresolved targets remain conformant.",
+        "specSections": [
+          "§6.1",
+          "§6.2",
+          "§11"
+        ]
       },
       {
         "rule": "OKF-0.2-A-LINK",
         "severity": "warning",
         "path": "metrics/gross-margin.md",
-        "line": 15
+        "line": 15,
+        "requirement": "Internal Markdown links and path-valued fields should use inspectable targets, while unresolved targets remain conformant.",
+        "specSections": [
+          "§6.1",
+          "§6.2",
+          "§11"
+        ]
       },
       {
         "rule": "OKF-0.2-A-LINK",
         "severity": "warning",
         "path": "metrics/revenue.md",
-        "line": 11
+        "line": 11,
+        "requirement": "Internal Markdown links and path-valued fields should use inspectable targets, while unresolved targets remain conformant.",
+        "specSections": [
+          "§6.1",
+          "§6.2",
+          "§11"
+        ]
       },
       {
         "rule": "OKF-0.2-A-LINK",
         "severity": "warning",
         "path": "tables/orders.md",
-        "line": 12
+        "line": 12,
+        "requirement": "Internal Markdown links and path-valued fields should use inspectable targets, while unresolved targets remain conformant.",
+        "specSections": [
+          "§6.1",
+          "§6.2",
+          "§11"
+        ]
       },
       {
         "rule": "OKF-0.2-A-LOG-FRONTMATTER",
         "severity": "warning",
         "path": "log.md",
-        "line": 1
+        "line": 1,
+        "requirement": "Avoid frontmatter in log.md because OKF defines only its Markdown date-grouped body structure."
       }
     ]
   },
@@ -153,49 +226,81 @@
         "rule": "OKF-0.2-A-TAGS",
         "severity": "warning",
         "path": "datasets/stackoverflow.md",
-        "line": 8
+        "line": 8,
+        "requirement": "The optional tags field should be a YAML list of strings.",
+        "specSections": [
+          "§4.1"
+        ]
       },
       {
         "rule": "OKF-0.2-A-TAGS",
         "severity": "warning",
         "path": "tables/posts_answers.md",
-        "line": 7
+        "line": 7,
+        "requirement": "The optional tags field should be a YAML list of strings.",
+        "specSections": [
+          "§4.1"
+        ]
       },
       {
         "rule": "OKF-0.2-A-TAGS",
         "severity": "warning",
         "path": "tables/posts_moderator_nomination.md",
-        "line": 7
+        "line": 7,
+        "requirement": "The optional tags field should be a YAML list of strings.",
+        "specSections": [
+          "§4.1"
+        ]
       },
       {
         "rule": "OKF-0.2-A-TAGS",
         "severity": "warning",
         "path": "tables/posts_questions.md",
-        "line": 6
+        "line": 6,
+        "requirement": "The optional tags field should be a YAML list of strings.",
+        "specSections": [
+          "§4.1"
+        ]
       },
       {
         "rule": "OKF-0.2-A-TAGS",
         "severity": "warning",
         "path": "tables/posts_wiki_placeholder.md",
-        "line": 7
+        "line": 7,
+        "requirement": "The optional tags field should be a YAML list of strings.",
+        "specSections": [
+          "§4.1"
+        ]
       },
       {
         "rule": "OKF-0.2-A-TAGS",
         "severity": "warning",
         "path": "tables/stackoverflow_posts.md",
-        "line": 7
+        "line": 7,
+        "requirement": "The optional tags field should be a YAML list of strings.",
+        "specSections": [
+          "§4.1"
+        ]
       },
       {
         "rule": "OKF-0.2-A-TAGS",
         "severity": "warning",
         "path": "tables/users.md",
-        "line": 6
+        "line": 6,
+        "requirement": "The optional tags field should be a YAML list of strings.",
+        "specSections": [
+          "§4.1"
+        ]
       },
       {
         "rule": "OKF-0.2-A-TAGS",
         "severity": "warning",
         "path": "tables/votes.md",
-        "line": 6
+        "line": 6,
+        "requirement": "The optional tags field should be a YAML list of strings.",
+        "specSections": [
+          "§4.1"
+        ]
       }
     ]
   }

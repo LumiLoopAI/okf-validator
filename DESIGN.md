@@ -26,7 +26,7 @@ src/
     core.ts          OKF-0.2-C1, C2, C3-INDEX, C3-LOG
     boundary.ts      BOUNDARY-CONTRACT, BOUNDARY-VERSION
     advisory.ts      OKF-0.2-A-* advisory checks
-  engine.ts          Load contract, select + run rules, collect findings
+  engine.ts          Load contract, select + run bundle or document rules, collect findings
   report.ts          Map engine result -> okf-validation-report.v1 JSON
   verify.ts          Input-tree manifest (sha256 per file) + comparison
   cli.ts             validate / manifest / verify commands, exit-code mapping
@@ -61,6 +61,8 @@ interface Rule {
   id: string;                          // e.g. 'OKF-0.2-C1'
   dimension: 'core' | 'boundary' | 'advisory';
   scope: 'document' | 'bundle';        // document rules may run per-file
+  requirement?: string;                // resolved from contract or advisory declaration
+  specSections?: readonly string[];    // canonical SPEC.md sections, when grounded
   check(ctx: RuleContext): Finding[];  // pure; no I/O beyond ctx
 }
 ```
@@ -75,14 +77,29 @@ interface Finding {
   path: string;                        // bundle-relative
   message: string;
   line?: number;                       // 1-based, when addressable
+  requirement?: string;                // concise statement of the rule
+  specSections?: readonly string[];    // canonical spec sections, when applicable
 }
 ```
 
 `rule`, `severity`, `path`, `message` map 1:1 onto the report schema's
 required finding fields. When a finding has an addressable source line,
-the optional 1-based `line` is also persisted in the v1 report.
+the optional 1-based `line` is also persisted in the v1 report. The optional
+`requirement` and `specSections` are persisted when present: core and boundary
+metadata is resolved from the selected contract by rule id, while advisory
+metadata is declared with the advisory rule. A missing contract rule or a
+check with no canonical spec basis leaves the corresponding field absent.
 
-## Rule inventory (contract 2.1.0)
+## Per-document fast lane
+
+`validateDocument(options: ValidateDocumentOptions): Promise<DocumentValidationResult>`
+loads the selected contract and exactly one requested Markdown path, filters
+the selected rule set to `scope: 'document'`, and returns only
+`{ path, findings }`. It never executes bundle-scoped rules and cannot produce
+a bundle status or validation report; bundle conformance requires
+`validateBundle`.
+
+## Rule inventory (contract 2.3.0)
 
 | Rule | Dimension | Scope | Substance |
 | ---- | --------- | ----- | --------- |

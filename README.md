@@ -4,7 +4,7 @@ A deterministic, library-first TypeScript conformance validator for the
 [Open Knowledge Format (OKF)](https://github.com/GoogleCloudPlatform/open-knowledge-format)
 — for LumiPad Knowledge Projects and any other OKF producer or consumer.
 
-- **Rule contract:** `contract/okf-v0.2-core.json` (`2.1.0`), pinned to the
+- **Rule contract:** `contract/okf-v0.2-core.json` (`2.3.0`), pinned to the
   exact canonical spec revision it implements
   (`open-knowledge-format@ad30107c`, `SPEC.md`, sha256-verified)
 - **Report schema:** `contract/okf-validation-report.schema.json`
@@ -57,6 +57,21 @@ const result = await validateBundle({
 });
 ```
 
+For latency-sensitive per-file checks, `validateDocument` evaluates only
+document-scoped rules and deliberately returns no bundle status or report:
+
+```ts
+import { validateDocument, MemoryProvider } from '@lumiloop/okf-validator';
+
+const result = await validateDocument({
+  provider: new MemoryProvider(new Map([['concept.md', source]])),
+  path: 'concept.md',
+  contractPath: 'contract/okf-v0.2-core.json',
+  expectedVersion: '0.2',
+});
+// { path: 'concept.md', findings: [...] }
+```
+
 ```sh
 okf-validator validate \
   --bundle path/to/bundle \
@@ -65,8 +80,9 @@ okf-validator validate \
   --output validation.json
 ```
 
-Findings identify the rule, severity, path, message, and an optional 1-based
-line; the JSON report conforms to `okf-validation-report.v1`.
+Findings identify the rule, severity, path, message, an optional 1-based line,
+and, when available, the rule's `requirement` and canonical `specSections`;
+the JSON report conforms to `okf-validation-report.v1`.
 
 ## Provenance
 
@@ -76,9 +92,10 @@ This implementation succeeds the Ruby validator at
 schema, and the conformance fixture suite under `tests/fixtures/` were
 imported verbatim from that qualified release and are the acceptance
 oracle: this implementation must produce the same verdicts on the same
-fixtures. The single substantive contract change since import is the
-upstream re-pin from the deprecated `knowledge-catalog` snapshot to the
-canonical `open-knowledge-format` repository (contract `2.0.0` → `2.1.0`).
+fixtures. Subsequent contract revisions re-pinned the deprecated
+`knowledge-catalog` snapshot to the canonical `open-knowledge-format`
+repository, aligned log-frontmatter treatment with §9, and added explanatory
+finding metadata without changing the oracle verdicts.
 
 ## License
 

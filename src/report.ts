@@ -10,6 +10,8 @@ export interface ReportFinding {
   path: string;
   message: string;
   line?: number;
+  requirement?: string;
+  specSections?: readonly string[];
 }
 
 export interface Recommendation {
@@ -97,6 +99,8 @@ export function createValidationReport(result: EngineResult): ValidationReport {
     path: item.path,
     message: item.message,
     ...(item.line === undefined ? {} : { line: item.line }),
+    ...(item.requirement === undefined ? {} : { requirement: item.requirement }),
+    ...(item.specSections === undefined ? {} : { specSections: [...item.specSections] }),
   }));
   const coreErrors = result.classifiedFindings.filter(
     ({ finding, dimension }) => dimension === "core" && finding.severity === "error",

@@ -3,6 +3,89 @@ import type { BundleDocument } from "../bundle.js";
 import { isMapping } from "../frontmatter.js";
 import { finding, type Finding, type Rule, type RuleContext } from "./types.js";
 
+interface AdvisoryMetadata {
+  requirement: string;
+  specSections?: readonly string[];
+}
+
+const advisoryMetadata = {
+  "OKF-0.2-A-LOG-FRONTMATTER": {
+    requirement: "Avoid frontmatter in log.md because OKF defines only its Markdown date-grouped body structure.",
+  },
+  "OKF-0.2-A-FIELD": {
+    requirement: "Recommended title, description, and resource fields should be strings when present.",
+    specSections: ["§4.1"],
+  },
+  "OKF-0.2-A-TAGS": {
+    requirement: "The optional tags field should be a YAML list of strings.",
+    specSections: ["§4.1"],
+  },
+  "OKF-0.2-A-STATUS": {
+    requirement: "The optional status field should be draft, stable, or deprecated.",
+    specSections: ["§5.4"],
+  },
+  "OKF-0.2-A-GENERATED": {
+    requirement: "The optional generated field should identify a valid actor and use an explicit-offset ISO 8601 datetime when at is present.",
+    specSections: ["§5", "§5.2", "§7"],
+  },
+  "OKF-0.2-A-VERIFIED": {
+    requirement: "Each optional verification event should identify a valid actor and an explicit-offset ISO 8601 datetime.",
+    specSections: ["§5", "§5.2", "§7"],
+  },
+  "OKF-0.2-A-STALE": {
+    requirement: "The optional stale_after field should be an explicit-offset ISO 8601 datetime.",
+    specSections: ["§5", "§5.5"],
+  },
+  "OKF-0.2-A-USAGE-WINDOW": {
+    requirement: "The optional usage_window field should contain explicit-offset ISO 8601 from and to datetimes.",
+    specSections: ["§5", "§5.1"],
+  },
+  "OKF-0.2-A-SOURCES": {
+    requirement: "The optional sources field should be a list of provenance entries.",
+    specSections: ["§5.1"],
+  },
+  "OKF-0.2-A-SOURCE": {
+    requirement: "Each source should name a non-empty resource and use valid optional credibility signals.",
+    specSections: ["§5", "§5.1"],
+  },
+  "OKF-0.2-A-SOURCE-ID": {
+    requirement: "Source ids used as stable attribution keys should be unique within a concept.",
+    specSections: ["§5.1"],
+  },
+  "OKF-0.2-A-LINK": {
+    requirement: "Internal Markdown links and path-valued fields should use inspectable targets, while unresolved targets remain conformant.",
+    specSections: ["§6.1", "§6.2", "§11"],
+  },
+  "OKF-0.2-A-FRAGMENT": {
+    requirement: "Internal Markdown fragments should resolve to a heading in the target document.",
+  },
+  "SECURITY-PATH": {
+    requirement: "Internal references should remain within the evaluated bundle boundary.",
+  },
+  "OKF-0.2-A-INDEX": {
+    requirement: "Index files should enumerate directory contents with Markdown links for progressive disclosure.",
+    specSections: ["§8"],
+  },
+  "OKF-0.2-A-PORTABLE": {
+    requirement: "Published bundles should contain portable declared content and exclude platform-specific artifacts.",
+  },
+  "PORTABILITY-METADATA": {
+    requirement: "Published bundles should exclude platform-specific metadata files.",
+  },
+} as const satisfies Record<string, AdvisoryMetadata>;
+
+type AdvisoryRuleId = keyof typeof advisoryMetadata;
+
+function advisoryFinding(
+  rule: AdvisoryRuleId,
+  severity: Finding["severity"],
+  path: string,
+  message: string,
+  line?: number,
+): Finding {
+  return { ...finding(rule, severity, path, message, line), ...advisoryMetadata[rule] };
+}
+
 function currentConcept(ctx: RuleContext): BundleDocument | undefined {
   return ctx.document?.kind === "concept" ? ctx.document : undefined;
 }
@@ -104,7 +187,7 @@ function inspectDestination(ctx: RuleContext, source: BundleDocument, destinatio
   try {
     decoded = decodeURIComponent(destination.value);
   } catch {
-    return finding("OKF-0.2-A-LINK", "warning", source.path, `reference could not be inspected: ${destination.value}`, destination.line);
+    return advisoryFinding("OKF-0.2-A-LINK", "warning", source.path, `reference could not be inspected: ${destination.value}`, destination.line);
   }
   const hash = decoded.indexOf("#");
   const rawPath = (hash === -1 ? decoded : decoded.slice(0, hash)).split("?", 1)[0]!;
@@ -115,18 +198,18 @@ function inspectDestination(ctx: RuleContext, source: BundleDocument, destinatio
       ? posix.normalize(rawPath.replace(/^\/+/, ""))
       : posix.normalize(posix.join(posix.dirname(source.path), rawPath));
   if (joined === ".." || joined.startsWith("../") || posix.isAbsolute(joined)) {
-    return finding("SECURITY-PATH", "warning", source.path, `reference escapes the bundle: ${destination.value}`, destination.line);
+    return advisoryFinding("SECURITY-PATH", "warning", source.path, `reference escapes the bundle: ${destination.value}`, destination.line);
   }
   const target = joined === "." ? "" : joined.replace(/\/$/, "");
   const exists =
     target === "" || ctx.bundle.paths.has(target) || [...ctx.bundle.paths].some((path) => path.startsWith(`${target}/`));
   if (!exists) {
-    return finding("OKF-0.2-A-LINK", "warning", source.path, `reference target is missing: ${destination.value}`, destination.line);
+    return advisoryFinding("OKF-0.2-A-LINK", "warning", source.path, `reference target is missing: ${destination.value}`, destination.line);
   }
   if (fragment !== undefined && fragment.length > 0 && ctx.bundle.paths.has(target) && target.toLowerCase().endsWith(".md")) {
     const targetDocument = ctx.bundle.documents.find((document) => document.path === target);
     if (targetDocument?.text !== undefined && !headingSlugs(targetDocument.text).includes(fragment.toLowerCase())) {
-      return finding("OKF-0.2-A-FRAGMENT", "warning", source.path, `reference fragment is missing: ${destination.value}`, destination.line);
+      return advisoryFinding("OKF-0.2-A-FRAGMENT", "warning", source.path, `reference fragment is missing: ${destination.value}`, destination.line);
     }
   }
   return undefined;
@@ -156,23 +239,25 @@ export const advisoryRules: readonly Rule[] = [
     id: "OKF-0.2-A-LOG-FRONTMATTER",
     dimension: "advisory",
     scope: "document",
+    ...advisoryMetadata["OKF-0.2-A-LOG-FRONTMATTER"],
     check(ctx) {
       const document = ctx.document;
       if (document?.kind !== "log" || document.frontmatter?.present !== true) return [];
-      return [finding(this.id, "warning", document.path, "log.md carries a frontmatter block; the OKF specification does not define frontmatter for log files", 1)];
+      return [advisoryFinding(this.id as AdvisoryRuleId, "warning", document.path, "log.md carries a frontmatter block; the OKF specification does not define frontmatter for log files", 1)];
     },
   },
   {
     id: "OKF-0.2-A-FIELD",
     dimension: "advisory",
     scope: "document",
+    ...advisoryMetadata["OKF-0.2-A-FIELD"],
     check(ctx) {
       const document = currentConcept(ctx);
       const data = conceptData(document);
       if (document === undefined || data === undefined) return [];
       return ["title", "description", "resource"].flatMap((key) =>
         key in data && typeof data[key] !== "string"
-          ? [finding(this.id, "warning", document.path, `${key} should be a string`, lineFor(document, key))]
+          ? [advisoryFinding(this.id as AdvisoryRuleId, "warning", document.path, `${key} should be a string`, lineFor(document, key))]
           : [],
       );
     },
@@ -181,30 +266,33 @@ export const advisoryRules: readonly Rule[] = [
     id: "OKF-0.2-A-TAGS",
     dimension: "advisory",
     scope: "document",
+    ...advisoryMetadata["OKF-0.2-A-TAGS"],
     check(ctx) {
       const document = currentConcept(ctx);
       const data = conceptData(document);
       if (document === undefined || data === undefined || !("tags" in data)) return [];
       if (Array.isArray(data.tags) && data.tags.every((tag) => typeof tag === "string")) return [];
-      return [finding(this.id, "warning", document.path, "tags should be a list of strings", lineFor(document, "tags"))];
+      return [advisoryFinding(this.id as AdvisoryRuleId, "warning", document.path, "tags should be a list of strings", lineFor(document, "tags"))];
     },
   },
   {
     id: "OKF-0.2-A-STATUS",
     dimension: "advisory",
     scope: "document",
+    ...advisoryMetadata["OKF-0.2-A-STATUS"],
     check(ctx) {
       const document = currentConcept(ctx);
       const data = conceptData(document);
       if (document === undefined || data === undefined || !("status" in data)) return [];
       if (["draft", "stable", "deprecated"].includes(String(data.status))) return [];
-      return [finding(this.id, "warning", document.path, "status should be draft, stable, or deprecated", lineFor(document, "status"))];
+      return [advisoryFinding(this.id as AdvisoryRuleId, "warning", document.path, "status should be draft, stable, or deprecated", lineFor(document, "status"))];
     },
   },
   {
     id: "OKF-0.2-A-GENERATED",
     dimension: "advisory",
     scope: "document",
+    ...advisoryMetadata["OKF-0.2-A-GENERATED"],
     check(ctx) {
       const document = currentConcept(ctx);
       const data = conceptData(document);
@@ -212,8 +300,8 @@ export const advisoryRules: readonly Rule[] = [
       const generated = data.generated;
       if (isMapping(generated) && actor(generated.by) && (generated.at === undefined || explicitOffsetDatetime(generated.at))) return [];
       return [
-        finding(
-          this.id,
+        advisoryFinding(
+          this.id as AdvisoryRuleId,
           "warning",
           document.path,
           "generated should be a mapping with a valid by actor and an explicit-offset ISO 8601 at datetime",
@@ -226,6 +314,7 @@ export const advisoryRules: readonly Rule[] = [
     id: "OKF-0.2-A-VERIFIED",
     dimension: "advisory",
     scope: "document",
+    ...advisoryMetadata["OKF-0.2-A-VERIFIED"],
     check(ctx) {
       const document = currentConcept(ctx);
       const data = conceptData(document);
@@ -233,8 +322,8 @@ export const advisoryRules: readonly Rule[] = [
       const entries = Array.isArray(data.verified) ? data.verified : [data.verified];
       if (entries.every((entry) => isMapping(entry) && actor(entry.by) && explicitOffsetDatetime(entry.at))) return [];
       return [
-        finding(
-          this.id,
+        advisoryFinding(
+          this.id as AdvisoryRuleId,
           "warning",
           document.path,
           "verified should contain mappings with a valid by actor and an explicit-offset ISO 8601 at datetime",
@@ -247,12 +336,13 @@ export const advisoryRules: readonly Rule[] = [
     id: "OKF-0.2-A-STALE",
     dimension: "advisory",
     scope: "document",
+    ...advisoryMetadata["OKF-0.2-A-STALE"],
     check(ctx) {
       const document = currentConcept(ctx);
       const data = conceptData(document);
       if (document === undefined || data === undefined || !("stale_after" in data) || explicitOffsetDatetime(data.stale_after)) return [];
       return [
-        finding(this.id, "warning", document.path, "stale_after should be an explicit-offset ISO 8601 datetime", lineFor(document, "stale_after")),
+        advisoryFinding(this.id as AdvisoryRuleId, "warning", document.path, "stale_after should be an explicit-offset ISO 8601 datetime", lineFor(document, "stale_after")),
       ];
     },
   },
@@ -260,13 +350,14 @@ export const advisoryRules: readonly Rule[] = [
     id: "OKF-0.2-A-USAGE-WINDOW",
     dimension: "advisory",
     scope: "document",
+    ...advisoryMetadata["OKF-0.2-A-USAGE-WINDOW"],
     check(ctx) {
       const document = currentConcept(ctx);
       const data = conceptData(document);
       if (document === undefined || data === undefined || !("usage_window" in data) || validateWindow(data.usage_window)) return [];
       return [
-        finding(
-          this.id,
+        advisoryFinding(
+          this.id as AdvisoryRuleId,
           "warning",
           document.path,
           "usage_window should contain explicit-offset ISO 8601 from and to datetimes",
@@ -279,19 +370,20 @@ export const advisoryRules: readonly Rule[] = [
     id: "OKF-0.2-A-SOURCE",
     dimension: "advisory",
     scope: "bundle",
+    ...advisoryMetadata["OKF-0.2-A-SOURCE"],
     check(ctx) {
       const findings: Finding[] = [];
       for (const document of ctx.bundle.documents) {
         const data = conceptData(document);
         if (document.kind !== "concept" || data === undefined || !("sources" in data)) continue;
         if (!Array.isArray(data.sources)) {
-          findings.push(finding("OKF-0.2-A-SOURCES", "warning", document.path, "sources should be a list", lineFor(document, "sources")));
+          findings.push(advisoryFinding("OKF-0.2-A-SOURCES", "warning", document.path, "sources should be a list", lineFor(document, "sources")));
           continue;
         }
         const ids = new Map<string, number>();
         data.sources.forEach((source, index) => {
           if (!isMapping(source) || typeof source.resource !== "string" || source.resource.trim().length === 0) {
-            findings.push(finding(this.id, "warning", document.path, `sources[${index}] should contain a non-empty resource`, lineFor(document, "sources")));
+            findings.push(advisoryFinding(this.id as AdvisoryRuleId, "warning", document.path, `sources[${index}] should contain a non-empty resource`, lineFor(document, "sources")));
             return;
           }
           if (source.id !== undefined && typeof source.id === "string") ids.set(source.id, (ids.get(source.id) ?? 0) + 1);
@@ -299,11 +391,11 @@ export const advisoryRules: readonly Rule[] = [
           const windowValid = source.usage_window === undefined || validateWindow(source.usage_window);
           const countValid = source.usage_count === undefined || (Number.isInteger(source.usage_count) && Number(source.usage_count) >= 0);
           if (!timestampValid || !windowValid || !countValid) {
-            findings.push(finding(this.id, "warning", document.path, `sources[${index}] has an invalid credibility signal`, lineFor(document, "sources")));
+            findings.push(advisoryFinding(this.id as AdvisoryRuleId, "warning", document.path, `sources[${index}] has an invalid credibility signal`, lineFor(document, "sources")));
           }
         });
         for (const id of [...ids.entries()].filter(([, count]) => count > 1).map(([id]) => id).sort()) {
-          findings.push(finding("OKF-0.2-A-SOURCE-ID", "warning", document.path, `source id ${JSON.stringify(id)} is duplicated`, lineFor(document, "sources")));
+          findings.push(advisoryFinding("OKF-0.2-A-SOURCE-ID", "warning", document.path, `source id ${JSON.stringify(id)} is duplicated`, lineFor(document, "sources")));
         }
       }
       return findings;
@@ -313,6 +405,7 @@ export const advisoryRules: readonly Rule[] = [
     id: "OKF-0.2-A-LINK",
     dimension: "advisory",
     scope: "bundle",
+    ...advisoryMetadata["OKF-0.2-A-LINK"],
     check(ctx) {
       const findings: Finding[] = [];
       for (const document of ctx.bundle.documents) {
@@ -336,6 +429,7 @@ export const advisoryRules: readonly Rule[] = [
     id: "OKF-0.2-A-INDEX",
     dimension: "advisory",
     scope: "document",
+    ...advisoryMetadata["OKF-0.2-A-INDEX"],
     check(ctx) {
       const document = ctx.document;
       if (
@@ -344,17 +438,18 @@ export const advisoryRules: readonly Rule[] = [
         document.frontmatter?.error !== undefined ||
         markdownDestinations(document.frontmatter?.body ?? document.text).length > 0
       ) return [];
-      return [finding(this.id, "warning", document.path, "index contains no Markdown links", document.frontmatter?.bodyStartLine)];
+      return [advisoryFinding(this.id as AdvisoryRuleId, "warning", document.path, "index contains no Markdown links", document.frontmatter?.bodyStartLine)];
     },
   },
   {
     id: "OKF-0.2-A-PORTABLE",
     dimension: "advisory",
     scope: "bundle",
+    ...advisoryMetadata["OKF-0.2-A-PORTABLE"],
     check(ctx) {
       return ctx.bundle.files.flatMap((file) =>
         posix.basename(file.path) === ".DS_Store"
-          ? [finding("PORTABILITY-METADATA", "warning", file.path, "platform metadata should be excluded from published bundles")]
+          ? [advisoryFinding("PORTABILITY-METADATA", "warning", file.path, "platform metadata should be excluded from published bundles")]
           : [],
       );
     },

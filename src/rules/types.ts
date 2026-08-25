@@ -9,14 +9,23 @@ export interface Finding {
   path: string;
   message: string;
   line?: number;
+  requirement?: string;
+  specSections?: readonly string[];
+}
+
+export interface ContractRuleDeclaration {
+  id: string;
+  description?: unknown;
+  specification?: unknown;
+  [key: string]: unknown;
 }
 
 export interface OkfContract {
   contract_version: string;
   okf_version: string;
   upstream: Record<string, unknown>;
-  core_rules: readonly { id: string; [key: string]: unknown }[];
-  evaluation_requirements: readonly { id: string; [key: string]: unknown }[];
+  core_rules: readonly ContractRuleDeclaration[];
+  evaluation_requirements: readonly ContractRuleDeclaration[];
   [key: string]: unknown;
 }
 
@@ -32,6 +41,8 @@ export interface Rule {
   id: string;
   dimension: RuleDimension;
   scope: RuleScope;
+  requirement?: string;
+  specSections?: readonly string[];
   check(ctx: RuleContext): Finding[];
 }
 

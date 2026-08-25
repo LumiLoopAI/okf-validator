@@ -9,10 +9,13 @@ export {
   defaultRules,
   evaluateBundle,
   loadContract,
+  validateDocument,
   type ClassifiedFinding,
   type ContractSelection,
+  type DocumentValidationResult,
   type EngineResult,
   type EvaluateBundleOptions,
+  type ValidateDocumentOptions,
 } from "./engine.js";
 export { createValidationReport, serializeReport, type Recommendation, type ReportFinding, type ValidationReport } from "./report.js";
 export { buildManifest, verifyManifest, type BundleManifest, type IntegrityReport, type ManifestEntry } from "./verify.js";

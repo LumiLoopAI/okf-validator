@@ -1,6 +1,6 @@
 {
   "schema_version": "okf-conformance-cases.v1",
-  "contract_version": "2.2.0",
+  "contract_version": "2.3.0",
   "base_fixture": "base",
   "cases": [
     {

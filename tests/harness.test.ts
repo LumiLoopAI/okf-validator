@@ -120,6 +120,15 @@ function assertValidationSchema(report: unknown): asserts report is ValidationRe
     if ("line" in finding) {
       assert.ok(Number.isInteger(finding.line) && Number(finding.line) >= 1, "finding line must be a 1-based integer");
     }
+    if ("requirement" in finding) {
+      assert.equal(typeof finding.requirement, "string", "finding requirement must be a string");
+    }
+    if ("specSections" in finding) {
+      assert.ok(
+        Array.isArray(finding.specSections) && finding.specSections.every((section) => typeof section === "string"),
+        "finding specSections must be an array of strings",
+      );
+    }
   }
   assert.ok(Array.isArray(value.recommendations));
   assert.ok((value.recommendations as unknown[]).every((item) => item !== null && typeof item === "object" && !Array.isArray(item)));
